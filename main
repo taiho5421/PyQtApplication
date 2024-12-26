@@ -1,0 +1,64 @@
+import sys
+
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit, QComboBox, \
+    QSlider
+
+
+class QtApplication(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('自訂化介面佈局')
+        self.resize(1000, 800)
+
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
+
+        self.layout = QVBoxLayout(self.central_widget)
+
+    def create_widget_label(self, x, y, w, h, text=''):
+        widget = QLabel(text, self.central_widget)
+        widget.setGeometry(x, y, w, h)
+        return widget
+
+    def create_widget_button(self, x, y, w, h, text='', callback=None):
+        widget = QPushButton(text, self.central_widget)
+        widget.setGeometry(x, y, w, h)
+        if callback is not None:
+            widget.clicked.connect(callback)
+        return widget
+
+    def create_widget_textbox(self, x, y, w, h, text=''):
+        widget = QLineEdit(self.central_widget)
+        widget.setGeometry(x, y, w, h)
+        widget.setText(text)
+        return widget
+
+    def create_widget_combobox(self, x, y, w, h, item=('1', '2', '3')):
+        widget = QComboBox(self.central_widget)
+        widget.setGeometry(x, y, w, h)
+        widget.addItems(item)
+        return widget
+
+    def create_widget_slider(self, x, y, w, h, callback=None, set_orientation=False, set_tickposition=None, set_tickinterval=10):
+        widget = QSlider(self.central_widget)
+        widget.setGeometry(x, y, w, h)
+        widget.setRange(0, 100)
+        widget.setOrientation(set_orientation)
+        if callback is not None:
+            widget.valueChanged.connect(callback)
+        if set_tickposition is not None:
+            widget.setTickPosition(set_tickposition)
+            widget.setTickInterval(set_tickinterval)
+        return widget
+
+
+def create_application():
+    """顯示主視窗
+    app, main_window = create_application()
+
+    # TODO
+
+    main_window.show()
+    sys.exit(app.exec_())
+    """
+    return QApplication(sys.argv), QtApplication()
